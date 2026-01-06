@@ -1,0 +1,317 @@
+:root {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --text-secondary: #a3a3a3;
+    --accent-color: #ffffff;
+    --accent-hover: #e5e5e5;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.0);
+    /* No border */
+    --surface: #0a0a0a;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: radial-gradient(circle at 50% -20%, #2a2a2a 0%, #000000 70%);
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+    perspective: 1000px;
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    border: none;
+    padding: 4rem;
+    border-radius: 0;
+    /* Sharper, more brutalist look fits B&W better, or keep rounded? Let's keep rounded but subtle. */
+    border-radius: 30px;
+    box-shadow: 0 0 100px -20px rgba(255, 255, 255, 0.05);
+    animation: cardEntrance 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+/* Typography & Titles */
+.event-title {
+    font-size: 8rem;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 1rem;
+    color: white;
+    /* Solid white for B&W theme */
+    letter-spacing: -4px;
+    animation: titleSlideUp 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+    mix-blend-mode: difference;
+}
+
+h2 {
+    font-weight: 300;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    animation: fadeIn 1s ease-out 0.6s backwards;
+}
+
+/* Launch Button */
+.launch-btn {
+    font-size: 2rem;
+    padding: 1.5rem 5rem;
+    background: var(--accent-color);
+    color: black;
+    border: none;
+    border-radius: 100px;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 2rem;
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    animation: scaleIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.8s backwards;
+    position: relative;
+    overflow: hidden;
+}
+
+.launch-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.1);
+    transform: translateY(100%);
+    transition: transform 0.3s;
+}
+
+.launch-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 50px rgba(255, 255, 255, 0.3);
+}
+
+.launch-btn:hover::before {
+    transform: translateY(0);
+}
+
+.launch-btn:active {
+    transform: scale(0.95);
+}
+
+/* Timer Page Styles */
+.timer-display {
+    font-size: 8rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -2px;
+    margin: 3rem 0;
+    line-height: 1;
+    animation: timerPulse 4s ease-in-out infinite;
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.controls {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+    animation: fadeIn 1s ease 1s backwards;
+}
+
+.btn {
+    padding: 1rem 2.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.btn-start {
+    background: white;
+    color: black;
+}
+
+.btn-start:hover {
+    background: #e5e5e5;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px -5px rgba(255, 255, 255, 0.2);
+}
+
+.btn-reset {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    /* Subtle border for reset mainly to define it */
+}
+
+.btn-reset:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border-color: white;
+}
+
+/* Warning & States */
+.warning-message {
+    color: white;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.5s;
+    font-weight: 600;
+    letter-spacing: 2px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    display: inline-block;
+}
+
+.warning-active {
+    opacity: 1;
+    transform: translateY(0);
+    animation: warningFlash 1s infinite alternate;
+}
+
+.event-closed {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    z-index: 100;
+}
+
+.event-closed h1 {
+    font-size: 5rem;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    animation: textFlicker 3s infinite;
+}
+
+/* Animations Keyframes */
+@keyframes cardEntrance {
+    0% {
+        opacity: 0;
+        transform: translateY(40px) scale(0.95) rotateX(10deg);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0);
+    }
+}
+
+@keyframes titleSlideUp {
+    0% {
+        opacity: 0;
+        transform: translateY(50px);
+        filter: blur(10px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes scaleIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes timerPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    }
+
+    50% {
+        transform: scale(1.02);
+        text-shadow: 0 0 50px rgba(255, 255, 255, 0.2);
+    }
+}
+
+@keyframes warningFlash {
+    0% {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    100% {
+        background: rgba(255, 255, 255, 0.9);
+        color: black;
+    }
+}
+
+@keyframes textFlicker {
+
+    0%,
+    19%,
+    21%,
+    23%,
+    25%,
+    54%,
+    56%,
+    100% {
+        opacity: 1;
+    }
+
+    20%,
+    24%,
+    55% {
+        opacity: 0.5;
+    }
+}
+
+.hidden {
+    display: none !important;
+}

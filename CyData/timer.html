@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Timer</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <h2 style="opacity: 0.8; text-transform: uppercase; letter-spacing: 2px;">Time Remaining</h2>
+
+            <div class="timer-display" id="display">02:00:00</div>
+
+            <div class="controls">
+                <button class="btn btn-start" id="startBtn">Start Timer</button>
+                <button class="btn btn-reset" id="resetBtn">Reset</button>
+            </div>
+
+            <div class="warning-message" id="warningMsg">⚠️ Warning: Only 30 Minutes Remaining!</div>
+        </div>
+    </div>
+
+    <!-- Full screen overlay for closed event -->
+    <div class="event-closed" id="eventClosed">
+        <h1>EVENT HAS CLOSED</h1>
+        <p style="margin-top: 1rem; opacity: 0.7;">The scheduled time for this event has expired.</p>
+    </div>
+
+    <!-- Audio for warning -->
+    <!-- Ideally, user should provide a file named 'warning.mp3' in the same folder -->
+    <audio id="warningAudio" preload="auto">
+        <source src="warning.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
