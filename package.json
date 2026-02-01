@@ -5,9 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next export",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "next lint",
     "deploy": "npx gh-pages -d out -b gh-pages"
   },
   "dependencies": {
