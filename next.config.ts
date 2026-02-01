@@ -3,6 +3,9 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   output: 'export',
   reactCompiler: true,
+  trailingSlash: true,
+  skipTrailingSlashRedirect: true,
+  distDir: 'out',
   images: {
     unoptimized: true,
     remotePatterns: [
