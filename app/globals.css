@@ -2,11 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --site-cursor: url('/cursors/triangle-pointer-24-black.svg');
-  color-scheme: light;
+  --background: #0a0a0a;
+  --foreground: #ededed;
+  --site-cursor: url('/cursors/triangle-pointer-24.svg');
+  color-scheme: dark;
 }
 
 :root[data-theme='light'] {
