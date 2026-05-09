@@ -18,6 +18,9 @@ export const metadata: Metadata = {
   title: "Sijomon P S | Full-Stack Developer Portfolio",
   description:
     "Portfolio of Sijomon P S, an aspiring full-stack developer focused on responsive web apps, practical problem solving, and modern frontend-backend development.",
+  verification: {
+    google: "TtdBbPpWogDiMgSiuz6zjh3gKCrhS_Ec_p8urZ-ZziM",
+  },
 };
 
 export default function RootLayout({
