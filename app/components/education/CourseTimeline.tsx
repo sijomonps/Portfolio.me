@@ -32,13 +32,11 @@ const educationTimeline: EducationItem[] = [
     period: "2020 - 2022",
     title: "Higher Secondary (Commerce Stream)",
     institution: "St. Johns HSS Eraviperoor",
-    score: "79%",
   },
   {
     period: "2019 - 2020",
     title: "Secondary School",
     institution: "SCS Higher Secondary School, Thiruvalla",
-    score: "77%",
   }
 ]
 
