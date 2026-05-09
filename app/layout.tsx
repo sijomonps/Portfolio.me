@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -30,17 +31,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme="dark" suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{
-          __html: `
-            (() => {
-              window.history.scrollRestoration = 'manual';
-              window.scrollTo(0, 0);
-            })();
-          `
-        }} />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Script id="scroll-restoration" strategy="beforeInteractive">
+          {`(() => {
+  window.history.scrollRestoration = "manual";
+  window.scrollTo(0, 0);
+})();`}
+        </Script>
         {children}
       </body>
     </html>
