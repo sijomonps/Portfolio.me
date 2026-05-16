@@ -1,5 +1,6 @@
 'use client'
 
+import Script from "next/script"
 import Hero from "./components/sections/Hero"
 import About from "./components/sections/About"
 import CourseTimeline from "./components/education/CourseTimeline"
@@ -11,8 +12,38 @@ import Gallery from './components/sections/Gallery'
 import SectionJumpToggle from './components/common/SectionJumpToggle'
 
 export default function Home() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Person",
+        name: "Sijomon P S",
+        url: "https://sijomonps.github.io/",
+        jobTitle: "Full-Stack Developer",
+        image: "https://sijomonps.github.io/avatar.jpg",
+        email: "mailto:sijomon700@gmail.com",
+        sameAs: [
+          "https://github.com/sijomonps",
+          "https://www.linkedin.com/in/sijomonps/",
+        ],
+      },
+      {
+        "@type": "WebSite",
+        name: "Sijomon P S Portfolio",
+        url: "https://sijomonps.github.io/",
+      },
+    ],
+  }
+
   return (
     <>
+      <Script
+        id="schema-org"
+        type="application/ld+json"
+        strategy="afterInteractive"
+      >
+        {JSON.stringify(structuredData)}
+      </Script>
       <Navbar />
       <main>
         <Hero />

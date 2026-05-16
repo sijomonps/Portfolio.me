@@ -15,10 +15,67 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const siteUrl = new URL("https://sijomonps.github.io");
+
 export const metadata: Metadata = {
-  title: "Sijomon P S | Full-Stack Developer Portfolio",
+  metadataBase: siteUrl,
+  title: {
+    default: "Sijomon P S | Full-Stack Developer Portfolio",
+    template: "%s | Sijomon P S",
+  },
   description:
-    "Portfolio of Sijomon P S, an aspiring full-stack developer focused on responsive web apps, practical problem solving, and modern frontend-backend development.",
+    "Portfolio of Sijomon P S, a full-stack developer focused on responsive web apps, practical problem solving, and modern frontend-backend development.",
+  keywords: [
+    "Sijomon P S",
+    "Sijomon",
+    "sijomonps",
+    "Full-stack developer",
+    "Web developer",
+    "Portfolio",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "Tailwind CSS",
+  ],
+  authors: [{ name: "Sijomon P S", url: siteUrl }],
+  creator: "Sijomon P S",
+  publisher: "Sijomon P S",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
+      "max-snippet": -1,
+    },
+  },
+  openGraph: {
+    type: "website",
+    url: "/",
+    title: "Sijomon P S | Full-Stack Developer Portfolio",
+    description:
+      "Portfolio of Sijomon P S, a full-stack developer focused on responsive web apps, practical problem solving, and modern frontend-backend development.",
+    siteName: "Sijomon P S",
+    locale: "en_US",
+    images: [
+      {
+        url: "/avatar.jpg",
+        alt: "Sijomon P S",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sijomon P S | Full-Stack Developer Portfolio",
+    description:
+      "Portfolio of Sijomon P S, a full-stack developer focused on responsive web apps, practical problem solving, and modern frontend-backend development.",
+    images: ["/avatar.jpg"],
+  },
   verification: {
     google: "TtdBbPpWogDiMgSiuz6zjh3gKCrhS_Ec_p8urZ-ZziM",
   },
