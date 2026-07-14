@@ -28,7 +28,7 @@ const projects: Project[] = [
       'Works across multiple AI platforms.',
       '60+ users actively using extension.',
     ],
-    impact: '60+ Users',
+    impact: '120+ Users',
     link: 'https://chromewebstore.google.com/detail/eimdlmdbonaemjmfnnnknjejlijpmcij?utm_source=item-share-cb',
     github: 'https://github.com/sijomonps/MarkGPT',
     featured: true,
