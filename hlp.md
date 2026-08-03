@@ -16,7 +16,7 @@ npm start
 ```bash
 npm run lint
 ```
-- Deploy to GitHub Pages (project has a `deploy` script):
+- Deployment is automatic via GitHub Actions upon pushing changes to `main`:
 ```bash
-npm run deploy
+git push origin main
 ```

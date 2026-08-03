@@ -4,7 +4,7 @@ This repository contains my personal portfolio website built with Next.js and Ta
 
 ## Live Site
 
-https://sijomonps.github.io/Portfolio.me/
+https://sijomonps.github.io/
 
 ## Tech Stack
 
@@ -27,18 +27,15 @@ https://sijomonps.github.io/Portfolio.me/
 
 ## GitHub Pages Deployment
 
-This project is configured for static export with GitHub Pages:
+This project uses **GitHub Actions** for automated static deployment to GitHub Pages:
 
-- output export enabled in next.config.ts
-- basePath and assetPrefix set to /Portfolio.me
-- images.unoptimized enabled
+- `output: "export"` enabled in `next.config.ts`
+- `images.unoptimized: true` enabled
+- Deployment triggers automatically on every push to `main` branch via `.github/workflows/deploy.yml`
 
-Deployment flow used:
-
-1. Keep full editable source in main branch.
-2. Build static files from main.
-3. Publish static files to gh-pages branch.
-4. Set GitHub Pages source to gh-pages branch in repository settings.
+### GitHub Repository Setup (One-time):
+1. Go to repository Settings > Pages on GitHub.
+2. Under **Build and deployment** > **Source**, select **GitHub Actions**.
 
 ## Contact
 
