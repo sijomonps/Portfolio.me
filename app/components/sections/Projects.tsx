@@ -100,10 +100,10 @@ export default function Projects() {
 
         <AnimatedText>
           <div className="text-center relative z-10">
-            <h1 className="text-3xl sm:text-4xl font-bold">
-              Featured Projects
+            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold text-foreground">
+              FEATURED PROJECTS
             </h1>
-            <p className="mt-3 max-w-2xl text-sm sm:text-base text-foreground/80">
+            <p className="mt-3 max-w-2xl mx-auto font-sans text-sm sm:text-base text-foreground/80 leading-relaxed">
               I enjoy building practical products that solve real problems, improve workflows, and create engaging user experiences.
             </p>
           </div>
@@ -124,16 +124,16 @@ export default function Projects() {
                 </div>
                 <div className="relative z-10">
                   <div className="flex items-center justify-between">
-                    <span className="rounded-full border border-white/15 bg-black/20 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-foreground/80">
+                    <span className="font-sans rounded-full border border-white/15 bg-black/20 px-3 py-1 text-xs font-medium uppercase tracking-wider text-foreground/80">
                       {project.category}
                     </span>
-                    <span className="rounded-full border border-white/15 bg-black/20 px-3 py-1 text-xs font-semibold text-foreground/80">
+                    <span className="font-sans rounded-full border border-white/15 bg-black/20 px-3 py-1 text-xs font-medium text-foreground/80">
                       {project.impact}
                     </span>
                   </div>
                 </div>
                 <div className="mt-4 flex items-start justify-between gap-4">
-                  <h2 className="text-2xl font-semibold leading-tight">{project.title}</h2>
+                  <h2 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase font-bold text-foreground leading-none">{project.title}</h2>
                   <div className="flex items-center gap-2">
                     <a
                       href={project.link}

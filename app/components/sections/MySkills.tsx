@@ -208,8 +208,8 @@ export default function MySkills() {
     <section id="skills" className="min-h-screen w-full flex items-center justify-center px-6 py-16 sm:px-12">
       <div className="container mx-auto max-w-6xl">
         <AnimatedText>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-10 sm:mb-14 text-center">
-            Technical Skills
+          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-10 sm:mb-14 text-center">
+            TECHNICAL SKILLS
           </h1>
         </AnimatedText>
 
@@ -217,14 +217,14 @@ export default function MySkills() {
           {skillsByCategory.map((group) => (
             <AnimatedText key={group.category} className="h-full">
               <div className="h-full rounded-2xl border border-black/10 bg-white/50 p-6 shadow-sm backdrop-blur-sm dark:border-white/15 dark:bg-white/[0.03]">
-                <h2 className="text-2xl font-semibold">{group.category}</h2>
-                <p className="mt-2 text-foreground/75 leading-relaxed">{group.description}</p>
+                <h2 className="font-display text-3xl sm:text-4xl tracking-wide uppercase font-bold">{group.category}</h2>
+                <p className="mt-2 font-sans text-sm sm:text-base text-foreground/80 leading-relaxed">{group.description}</p>
 
                 <div className="mt-5 flex flex-wrap gap-2">
                   {group.items.map((item) => (
                     <span
                       key={item}
-                      className="rounded-full border border-black/10 px-3 py-1 text-sm font-medium dark:border-white/20"
+                      className="font-sans rounded-full border border-black/10 px-3 py-1 text-xs font-medium uppercase tracking-wider dark:border-white/20"
                     >
                       {item}
                     </span>
@@ -235,9 +235,9 @@ export default function MySkills() {
           ))}
         </div>
 
-        <AnimatedText className="mt-10 sm:mt-12">
+        <AnimatedText className="mt-12 sm:mt-16">
           <div className="flex flex-col items-center">
-            <h2 className="mb-2 text-center text-lg font-semibold uppercase tracking-[0.22em] text-foreground/80 sm:text-xl dark:text-white/80">Tech Stack</h2>
+            <h2 className="font-display text-3xl sm:text-4xl tracking-widest uppercase font-bold mb-2 text-center text-foreground">TECH STACK</h2>
             <div
               className="relative mt-3 h-[300px] w-[300px] sm:h-[360px] sm:w-[360px] overflow-hidden"
               onPointerMove={handlePointerMove}

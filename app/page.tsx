@@ -19,9 +19,9 @@ export default function Home() {
         <About />
         <MySkills />
 
-        <section id="education" className="min-h-screen w-full flex items-center justify-center px-6 py-16 sm:px-12">
+        <section id="education" className="min-h-screen w-full flex items-center justify-center px-6 py-20 sm:px-12">
           <div className="w-full max-w-5xl">
-            <h1 className="text-4xl font-bold mb-12 text-center">Education</h1>
+            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-12 text-center">EDUCATION</h1>
             <CourseTimeline />
           </div>
         </section>

@@ -1,35 +1,43 @@
 'use client'
 
+import Image from "next/image"
 import AnimatedText from "../common/AnimatedText"
 
-const strengths = [
-  "Strong interest in web development and problem solving",
-  "Fast learner with a practical, build-and-ship mindset",
-  "Comfortable combining frontend creativity with backend fundamentals",
-  "Focused on real-world projects and continuous growth",
-  "Creative editing and design sense for better product presentation",
-]
-
 export default function About() {
+  const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
+  const assetPath = (path: string) => `${basePath}${path}`
+
   return (
-    <section id="about" className="relative min-h-screen w-full flex items-center justify-center px-6 py-16 sm:px-12">
-      <div className="relative max-w-4xl w-full">
+    <section id="about" className="relative min-h-screen w-full flex items-center justify-center px-6 py-20 sm:px-12">
+      <div className="relative max-w-3xl w-full">
         <div className="space-y-12">
           <AnimatedText>
-            <h1 className="text-4xl font-bold mb-8 text-center">About Me</h1>
+            <div className="flex flex-col items-center mb-8">
+              <Image
+                className="rounded-full border border-black/10 dark:border-white/20 shadow-xl mb-6"
+                src={assetPath("/avatar.jpg")}
+                alt="Profile Picture"
+                width={120}
+                height={120}
+                priority
+              />
+              <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold text-center">
+                ABOUT ME
+              </h1>
+            </div>
           </AnimatedText>
 
           <div className="space-y-10">
             <AnimatedText>
-              <div className="space-y-4">
-                <p className="text-lg text-foreground/80 leading-relaxed">
+              <div className="space-y-5 font-sans text-base sm:text-lg leading-relaxed text-foreground/85">
+                <p>
                   My journey into development started with creativity.
                   During my Commerce degree, I spent most of my time building
                   skills in video editing, portrait drawing, and expressing ideas
                   visually. Stepping out of my comfort zone during college helped
                   me grow, take initiative, and confidently showcase my work.
                 </p>
-                <p className="text-lg text-foreground/80 leading-relaxed">
+                <p>
                   That creative mindset naturally led me into software
                   development. Today, I build modern web applications with
                   a focus on real-world impact, bringing the same creativity,
@@ -41,25 +49,11 @@ export default function About() {
             </AnimatedText>
 
             <AnimatedText>
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold">Strengths</h2>
-                <ul className="grid gap-3 text-foreground/80 sm:grid-cols-2">
-                  {strengths.map((strength) => (
-                    <li
-                      key={strength}
-                      className="rounded-xl border border-black/10 dark:border-white/15 px-4 py-3 text-base"
-                    >
-                      {strength}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </AnimatedText>
-
-            <AnimatedText>
-              <div className="space-y-4">
-                <h2 className="text-2xl font-semibold">Career Goals</h2>
-                <p className="text-lg text-foreground/80 leading-relaxed">
+              <div className="space-y-3">
+                <h2 className="font-display text-3xl sm:text-4xl tracking-wide uppercase font-bold text-foreground">
+                  CAREER GOALS
+                </h2>
+                <p className="font-sans text-base sm:text-lg leading-relaxed text-foreground/85">
                   I am looking for opportunities where I can contribute as a Full-Stack or Web Developer,
                   gain hands-on product experience, and grow into a dependable engineer who builds scalable,
                   user-friendly digital solutions.

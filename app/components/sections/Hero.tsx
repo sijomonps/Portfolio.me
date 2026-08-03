@@ -1,142 +1,167 @@
 'use client'
 
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import AnimatedText from "../common/AnimatedText"
 import FloatingElements from "../common/FloatingElements"
+import HeroVideoBackground from "./HeroVideoBackground"
 
 export default function Hero() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
   const assetPath = (path: string) => `${basePath}${path}`
   const resumeUrl = "/Resume.pdf"
 
+  const [isReducedMotion, setIsReducedMotion] = useState(() => {
+    if (typeof window === 'undefined') return false
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  })
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const handleMotionChange = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches)
+    mediaQuery.addEventListener('change', handleMotionChange)
+    return () => mediaQuery.removeEventListener('change', handleMotionChange)
+  }, [])
+
   return (
     <section
       id="home"
-      className="relative min-h-screen px-6 pt-28 pb-14 sm:px-12"
+      className={`relative w-full ${isReducedMotion ? 'min-h-screen py-16' : 'h-[500vh]'}`}
     >
-      <FloatingElements />
-      <main className="relative z-10 mx-auto flex min-h-[calc(100vh-7rem)] w-full max-w-3xl flex-col justify-center space-y-7">
-        <AnimatedText className="flex flex-col items-start gap-3 text-left">
-          <Image
-            className="rounded-full"
-            src={assetPath("/avatar.jpg")}
-            alt="Profile Picture"
-            width={104}
-            height={104}
-            priority
-          />
-          <p className="text-xs uppercase tracking-[0.18em] text-foreground/60">
-            Thiruvalla, Kerala, India
-          </p>
-          <h1 className="text-2xl font-bold sm:text-3xl">Sijomon P S</h1>
-          <p className="text-sm text-foreground/80 sm:text-base">
-            Full-Stack Developer | MCA Student
-          </p>
-        </AnimatedText>
+      <div className={`${isReducedMotion ? 'relative min-h-screen' : 'sticky top-0 h-screen'} w-full overflow-hidden flex flex-col justify-between px-6 pt-24 pb-8 sm:px-12`}>
+        <HeroVideoBackground assetPath={assetPath} isReducedMotion={isReducedMotion} />
+        <FloatingElements />
 
-        <AnimatedText className="max-w-3xl text-left">
-          <p className="text-sm leading-relaxed text-foreground/80 sm:text-base">
-            Commerce to code — I chose curiosity over comfort. Now I build real web 
-            applications and look forward to growing fast by taking ownership in a 
-            small, driven team.
-          </p>
-        </AnimatedText>
+        {/* Center Editorial Title Block (Visual Focus of the Hero) */}
+        <main className="relative z-10 mx-auto my-auto flex flex-col items-center justify-center text-center space-y-4 px-4">
+          <AnimatedText className="flex flex-col items-center text-center">
+            <p className="font-sans text-xs uppercase tracking-[0.3em] text-foreground/50 font-semibold mb-2">
+              Thiruvalla, Kerala, India
+            </p>
+            <h1 className="font-display text-7xl sm:text-9xl md:text-[10rem] tracking-wider uppercase font-bold text-foreground leading-none drop-shadow-2xl">
+              SIJOMON P S
+            </h1>
+            <p className="font-sans text-xs sm:text-sm uppercase tracking-[0.25em] text-foreground/80 font-medium mt-3">
+              Full-Stack Developer | MCA Student
+            </p>
+          </AnimatedText>
+        </main>
 
-        <AnimatedText className="flex flex-wrap items-center gap-2 sm:gap-3">
-          <a
-            className="
-              rounded-full border border-solid border-black/[.12] dark:border-white/[.2]
-              transition-colors flex items-center justify-center
-              hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a]
-              h-9 px-4 text-sm
-            "
-            href="https://github.com/sijomonps"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="invert dark:invert-0 mr-2"
-              src={assetPath("/github.svg")}
-              alt="GitHub"
-              width={20}
-              height={20}
-              sizes="20px"
-            />
-            GitHub
-          </a>
+        {/* Bottom Editorial Content Bar (Anchored at the Bottom) */}
+        <div className="relative z-10 w-full max-w-4xl mx-auto">
+          <AnimatedText>
+            <div className="rounded-2xl border border-white/10 bg-black/40 p-5 sm:p-6 backdrop-blur-md shadow-2xl space-y-4">
+              <p className="font-sans text-sm sm:text-base leading-relaxed text-foreground/85 font-normal max-w-3xl">
+                Commerce to code — I chose curiosity over comfort. Now I build real web 
+                applications and look forward to growing fast by taking ownership in a 
+                small, driven team.
+              </p>
 
-          <a
-            className="
-              rounded-full border border-solid border-black/[.12] dark:border-white/[.2]
-              transition-colors flex items-center justify-center
-              hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a]
-              h-9 px-4 text-sm
-            "
-            href="https://www.linkedin.com/in/sijomonps/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert mr-2"
-              src={assetPath("/linkedin.svg")}
-              alt="LinkedIn"
-              width={20}
-              height={20}
-              sizes="20px"
-            />
-            LinkedIn
-          </a>
+              <div className="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-white/10">
+                {/* Social & Action Links */}
+                <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                  <a
+                    className="
+                      font-sans text-xs tracking-wider uppercase font-medium
+                      rounded-full border border-white/20 bg-white/10
+                      transition-all flex items-center justify-center
+                      hover:bg-white/20 text-foreground
+                      h-9 px-4
+                    "
+                    href="https://github.com/sijomonps"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      className="invert dark:invert-0 mr-2"
+                      src={assetPath("/github.svg")}
+                      alt="GitHub"
+                      width={16}
+                      height={16}
+                    />
+                    GitHub
+                  </a>
 
-          <a
-            className="
-              rounded-full border border-solid border-black/[.12] dark:border-white/[.2]
-              transition-colors flex items-center justify-center
-              hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a]
-              h-9 px-4 text-sm
-            "
-            href="mailto:sijomon700@gmail.com"
-          >
-            <Image
-              className="dark:invert mr-2"
-              src={assetPath("/mail.svg")}
-              alt="Email"
-              width={20}
-              height={20}
-              sizes="20px"
-            />
-            Email Me
-          </a>
-        </AnimatedText>
+                  <a
+                    className="
+                      font-sans text-xs tracking-wider uppercase font-medium
+                      rounded-full border border-white/20 bg-white/10
+                      transition-all flex items-center justify-center
+                      hover:bg-white/20 text-foreground
+                      h-9 px-4
+                    "
+                    href="https://www.linkedin.com/in/sijomonps/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      className="dark:invert mr-2"
+                      src={assetPath("/linkedin.svg")}
+                      alt="LinkedIn"
+                      width={16}
+                      height={16}
+                    />
+                    LinkedIn
+                  </a>
 
-        <AnimatedText className="grid max-w-3xl grid-cols-1 gap-2 text-left text-xs text-foreground/75 sm:grid-cols-3">
-          <a className="hover:text-foreground" href="tel:+916235719647">
-            Phone: +91 62357 19647
-          </a>
-          <a className="hover:text-foreground" href="mailto:sijomon700@gmail.com">
-            sijomon700@gmail.com
-          </a>
-          <p>Open to internships and junior web developer roles</p>
-        </AnimatedText>
+                  <a
+                    className="
+                      font-sans text-xs tracking-wider uppercase font-medium
+                      rounded-full border border-white/20 bg-white/10
+                      transition-all flex items-center justify-center
+                      hover:bg-white/20 text-foreground
+                      h-9 px-4
+                    "
+                    href="mailto:sijomon700@gmail.com"
+                  >
+                    <Image
+                      className="dark:invert mr-2"
+                      src={assetPath("/mail.svg")}
+                      alt="Email"
+                      width={16}
+                      height={16}
+                    />
+                    Email Me
+                  </a>
 
-        <AnimatedText className="flex flex-wrap items-center gap-4 pt-2 text-xs text-foreground/70">
-          <a
-            className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-            href={resumeUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert mr-2"
-              src={assetPath("/resume.svg")}
-              alt="Resume"
-              width={25}
-              height={20}
-              sizes="20px"
-            />
-            View Resume
-          </a>
-        </AnimatedText>
-      </main>
+                  <a
+                    className="
+                      font-sans text-xs tracking-wider uppercase font-medium
+                      rounded-full border border-white/20 bg-white/10
+                      transition-all flex items-center justify-center
+                      hover:bg-white/20 text-foreground
+                      h-9 px-4
+                    "
+                    href={resumeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Image
+                      className="dark:invert mr-2"
+                      src={assetPath("/resume.svg")}
+                      alt="Resume"
+                      width={16}
+                      height={16}
+                    />
+                    Resume
+                  </a>
+                </div>
+
+                {/* Secondary Meta Information */}
+                <div className="flex flex-wrap items-center gap-4 text-xs font-sans text-foreground/60">
+                  <a className="hover:text-foreground transition-colors" href="tel:+916235719647">
+                    +91 62357 19647
+                  </a>
+                  <a className="hover:text-foreground transition-colors" href="mailto:sijomon700@gmail.com">
+                    sijomon700@gmail.com
+                  </a>
+                  <span>Open to roles</span>
+                </div>
+              </div>
+            </div>
+          </AnimatedText>
+        </div>
+      </div>
     </section>
   )
 }

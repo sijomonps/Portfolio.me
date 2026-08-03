@@ -3,22 +3,22 @@
 @tailwind utilities;
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #09090b;
+  --foreground: #f4f4f5;
   --site-cursor: url('/cursors/triangle-pointer-24.svg');
   color-scheme: dark;
 }
 
 :root[data-theme='light'] {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fafafa;
+  --foreground: #09090b;
   --site-cursor: url('/cursors/triangle-pointer-24-black.svg');
   color-scheme: light;
 }
 
 :root[data-theme='dark'] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #09090b;
+  --foreground: #f4f4f5;
   --site-cursor: url('/cursors/triangle-pointer-24.svg');
   color-scheme: dark;
 }
@@ -26,7 +26,13 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: var(--font-geist-sans), "Segoe UI", sans-serif;
+  font-family: var(--font-body), system-ui, -apple-system, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display), sans-serif;
+  letter-spacing: 0.04em;
 }
 
 ::-webkit-scrollbar {

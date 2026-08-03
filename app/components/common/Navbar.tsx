@@ -129,10 +129,10 @@ export default function Navbar() {
                 <a
                   href={item.href}
                   className={`
-                    text-xs sm:text-sm
-                    font-medium whitespace-nowrap transition-colors
+                    font-sans text-xs uppercase tracking-[0.15em]
+                    font-semibold whitespace-nowrap transition-colors
                     ${activeSection === item.href.slice(1)
-                      ? "text-foreground"
+                      ? "text-foreground font-bold"
                       : "text-foreground/60 hover:text-foreground"
                     }
                   `}

@@ -63,11 +63,11 @@ export default function Contact() {
         />
 
         <AnimatedText>
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-center relative z-10">Let&apos;s Connect</h1>
+          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-4 text-center relative z-10 text-foreground">LET&apos;S CONNECT</h1>
         </AnimatedText>
 
         <AnimatedText>
-          <p className="relative z-10 max-w-3xl text-center text-lg text-foreground/80 leading-relaxed">
+          <p className="relative z-10 max-w-2xl text-center font-sans text-base sm:text-lg text-foreground/85 leading-relaxed">
             My goal is to grow as a full-stack developer by contributing to meaningful products, solving practical
             problems, and continuously improving through collaboration and real-world engineering experience.
           </p>
