@@ -28,7 +28,7 @@ export default function Hero() {
           <p className="text-xs uppercase tracking-[0.18em] text-foreground/60">
             Thiruvalla, Kerala, India
           </p>
-          <h1 className="text-2xl font-bold sm:text-3xl">Sijomon P Ss</h1>
+          <h1 className="text-2xl font-bold sm:text-3xl">Sijomon P S</h1>
           <p className="text-sm text-foreground/80 sm:text-base">
             Full-Stack Developer | MCA Student
           </p>
