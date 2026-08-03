@@ -110,13 +110,13 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-10 bg-background/80 backdrop-blur-sm">
       <div className="
         max-w-4xl mx-auto 
-        px-3 sm:px-4 /* 移动端水平内边距3, sm(640px)以上为4 */
+        px-3 sm:px-4
         py-4 pb-2 sm:pb-4
       ">
         <div className="relative">
           <ul ref={navRef} className="
             flex justify-center 
-            gap-4 sm:gap-8 /* 移动端间距4, sm(640px)以上为8 */
+            gap-4 sm:gap-8
             relative text-center overflow-x-auto pr-0 sm:pr-12
           ">
             <div
@@ -129,7 +129,7 @@ export default function Navbar() {
                 <a
                   href={item.href}
                   className={`
-                    text-xs sm:text-sm /* 移动端字体大小xs(12px), sm(640px)以上为base(16px) */
+                    text-xs sm:text-sm
                     font-medium whitespace-nowrap transition-colors
                     ${activeSection === item.href.slice(1)
                       ? "text-foreground"

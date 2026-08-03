@@ -50,7 +50,7 @@ const contactItems: ContactItem[] = [
   },
 ]
 
-export default function Gallery() {
+export default function Contact() {
   return (
     <section id="contact" className="container mx-auto px-6 sm:px-10 md:px-12">
       <div className="min-h-screen flex flex-col items-center justify-center py-16 md:py-20 relative overflow-hidden">
