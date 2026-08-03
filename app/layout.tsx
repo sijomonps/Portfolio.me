@@ -31,7 +31,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-theme="dark" suppressHydrationWarning>
+    <html lang="en" className="dark" data-theme="dark">
       <body className={`${displayFont.variable} ${bodyFont.variable} font-sans antialiased`}>
         <Script id="scroll-restoration" strategy="beforeInteractive">
           {`(() => {

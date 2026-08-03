@@ -9,20 +9,6 @@
   color-scheme: dark;
 }
 
-:root[data-theme='light'] {
-  --background: #fafafa;
-  --foreground: #09090b;
-  --site-cursor: url('/cursors/triangle-pointer-24-black.svg');
-  color-scheme: light;
-}
-
-:root[data-theme='dark'] {
-  --background: #09090b;
-  --foreground: #f4f4f5;
-  --site-cursor: url('/cursors/triangle-pointer-24.svg');
-  color-scheme: dark;
-}
-
 body {
   color: var(--foreground);
   background: var(--background);
