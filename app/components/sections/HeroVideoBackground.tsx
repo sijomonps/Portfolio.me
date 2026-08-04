@@ -26,18 +26,21 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
     let targetTime = VIDEO_START_TIME
     let currentTime = VIDEO_START_TIME
     let lastSetTime = -1
+    
+    let hasInitialized = false
+    let isInitSeeking = false
 
     const getTrimmedBounds = () => {
       // Fallback duration in case metadata isn't fully loaded in production
-      const duration = video.duration && isFinite(video.duration) ? video.duration : 10.006
+      const duration = video.duration && isFinite(video.duration) && !isNaN(video.duration) ? video.duration : 10.006
       const endTime = Math.max(VIDEO_START_TIME + 0.5, duration - VIDEO_END_OFFSET)
       const startTime = Math.min(VIDEO_START_TIME, endTime - 0.1)
       return { startTime, endTime }
     }
 
     const render = () => {
-      if (!video || video.readyState < 2) {
-        animationFrameId = requestAnimationFrame(render)
+      if (!video || !hasInitialized) {
+        // Sleep until initialized
         return
       }
 
@@ -45,28 +48,41 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
       const diff = targetTime - currentTime
 
       if (Math.abs(diff) > 0.001) {
+        // Interpolate virtual time smoothly
         currentTime += diff * SCRUB_SMOOTHNESS
         const nextTime = Math.max(startTime, Math.min(endTime, currentTime))
         
         // Prevent setting currentTime repeatedly for tiny decimals to avoid decoder jitter
         if (Math.abs(lastSetTime - nextTime) > 0.005) {
-          video.currentTime = nextTime
-          lastSetTime = nextTime
+          if (!video.seeking) { // NEVER seek while a seek is pending
+            video.currentTime = nextTime
+            lastSetTime = nextTime
+          }
         }
         animationFrameId = requestAnimationFrame(render)
       } else {
+        // Virtual time reached target
         currentTime = targetTime
         const nextTime = Math.max(startTime, Math.min(endTime, targetTime))
+        
         if (Math.abs(lastSetTime - nextTime) > 0.005) {
-          video.currentTime = nextTime
-          lastSetTime = nextTime
+          if (!video.seeking) {
+            video.currentTime = nextTime
+            lastSetTime = nextTime
+            animationFrameId = null // Pause render loop
+          } else {
+            // Still seeking; must wait for current seek to finish before issuing final frame
+            animationFrameId = requestAnimationFrame(render)
+          }
+        } else {
+          // Final frame reached, sleep
+          animationFrameId = null
         }
-        animationFrameId = null // Pause render loop when not scrubbing
       }
     }
 
     const startRender = () => {
-      if (!animationFrameId) {
+      if (!animationFrameId && hasInitialized) {
         animationFrameId = requestAnimationFrame(render)
       }
     }
@@ -93,37 +109,63 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
     const handleScroll = () => updateScrollProgress()
     const handleResize = () => updateScrollProgress()
 
-    const handleLoadedData = () => {
-      video.pause()
+    // Production pipeline initialization
+    const initVideo = () => {
+      if (hasInitialized || isInitSeeking) return
+      
+      // 2. Load video metadata (readyState >= 1)
+      if (video.readyState < 1) return
+
+      // 3. Verify video.duration is valid
+      const duration = video.duration
+      if (!duration || !isFinite(duration) || isNaN(duration)) return
+
       const { startTime } = getTrimmedBounds()
-      
-      if (Math.abs(video.currentTime - startTime) > 0.05) {
-        video.currentTime = startTime
+
+      // 4 & 5. If we're already at start time and have data, proceed
+      if (Math.abs(video.currentTime - startTime) <= 0.05 && video.readyState >= 2) {
+        handleSeeked()
+        return
       }
-      currentTime = startTime
-      targetTime = startTime
-      lastSetTime = startTime
+
+      // Seek to VIDEO_START_TIME
+      isInitSeeking = true
+      video.currentTime = startTime
+    }
+
+    const handleSeeked = () => {
+      if (hasInitialized) return
       
-      updateScrollProgress()
+      // 6. Wait until seek completes
+      isInitSeeking = false
+      hasInitialized = true
+      
+      // 7. Fade from poster to video
       setIsReady(true)
+      
+      // 8. Enable scroll scrubbing
+      updateScrollProgress()
+      window.addEventListener('scroll', handleScroll, { passive: true })
+      window.addEventListener('resize', handleResize, { passive: true })
+      startRender()
     }
 
-    if (video.readyState >= 2) {
-      handleLoadedData()
-    } else {
-      video.addEventListener('loadeddata', handleLoadedData)
-      video.addEventListener('canplay', handleLoadedData)
-    }
+    // Attach listeners for robust startup in all browsers
+    video.addEventListener('loadedmetadata', initVideo)
+    video.addEventListener('durationchange', initVideo)
+    video.addEventListener('canplay', initVideo)
+    video.addEventListener('seeked', handleSeeked)
 
-    window.addEventListener('scroll', handleScroll, { passive: true })
-    window.addEventListener('resize', handleResize, { passive: true })
-    startRender()
+    // Trigger manually in case it's already cached
+    initVideo()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
-      video.removeEventListener('loadeddata', handleLoadedData)
-      video.removeEventListener('canplay', handleLoadedData)
+      video.removeEventListener('loadedmetadata', initVideo)
+      video.removeEventListener('durationchange', initVideo)
+      video.removeEventListener('canplay', initVideo)
+      video.removeEventListener('seeked', handleSeeked)
       if (animationFrameId) cancelAnimationFrame(animationFrameId)
     }
   }, [isReducedMotion])
