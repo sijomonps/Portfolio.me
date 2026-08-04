@@ -3,114 +3,110 @@
 import Image from 'next/image'
 import { useEffect, useRef, useState } from 'react'
 
-// Configurable constants for Apple-style video completion pinning
-export const VIDEO_START_TIME = 0.2         // Seconds: Start slightly after 0s to prevent flicker
-export const VIDEO_END_OFFSET = 3.0         // Seconds: Trim off unwanted video outro frames
-export const HERO_SCROLL_MULTIPLIER = 2.8   // Viewport height multiplier per second of usable video duration
-export const SCRUB_SMOOTHNESS = 0.08        // Lerp factor for video scrubbing inertia
+// Configurable constants for video pinning
+export const VIDEO_START_TIME = 0.2
+export const VIDEO_END_OFFSET = 3.0
+export const SCRUB_SMOOTHNESS = 0.08
 
 interface Props {
   assetPath: (path: string) => string
   isReducedMotion?: boolean
-  onTrackHeightChange?: (heightVh: number) => void
 }
 
-export default function HeroVideoBackground({ assetPath, isReducedMotion = false, onTrackHeightChange }: Props) {
+export default function HeroVideoBackground({ assetPath, isReducedMotion = false }: Props) {
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
     if (isReducedMotion) return
-
     const video = videoRef.current
     if (!video) return
 
-    let animationFrameId: number
+    let animationFrameId: number | null = null
     let targetTime = VIDEO_START_TIME
     let currentTime = VIDEO_START_TIME
-
-    // Cached layout metrics to eliminate scroll reflows & layout thrashing
-    let cachedHeroTop = 0
-    let cachedMaxScroll = 0
-
-    const updateMeasurements = () => {
-      const heroElement = document.getElementById('home')
-      if (heroElement) {
-        const height = heroElement.offsetHeight
-        cachedHeroTop = heroElement.offsetTop
-        cachedMaxScroll = height > window.innerHeight ? height - window.innerHeight : height
-      }
-    }
+    let lastSetTime = -1
 
     const getTrimmedBounds = () => {
-      const duration = video.duration && isFinite(video.duration) ? video.duration : 10
+      // Fallback duration in case metadata isn't fully loaded in production
+      const duration = video.duration && isFinite(video.duration) ? video.duration : 10.006
       const endTime = Math.max(VIDEO_START_TIME + 0.5, duration - VIDEO_END_OFFSET)
       const startTime = Math.min(VIDEO_START_TIME, endTime - 0.1)
       return { startTime, endTime }
     }
 
+    const render = () => {
+      if (!video || video.readyState < 2) {
+        animationFrameId = requestAnimationFrame(render)
+        return
+      }
+
+      const { startTime, endTime } = getTrimmedBounds()
+      const diff = targetTime - currentTime
+
+      if (Math.abs(diff) > 0.001) {
+        currentTime += diff * SCRUB_SMOOTHNESS
+        const nextTime = Math.max(startTime, Math.min(endTime, currentTime))
+        
+        // Prevent setting currentTime repeatedly for tiny decimals to avoid decoder jitter
+        if (Math.abs(lastSetTime - nextTime) > 0.005) {
+          video.currentTime = nextTime
+          lastSetTime = nextTime
+        }
+        animationFrameId = requestAnimationFrame(render)
+      } else {
+        currentTime = targetTime
+        const nextTime = Math.max(startTime, Math.min(endTime, targetTime))
+        if (Math.abs(lastSetTime - nextTime) > 0.005) {
+          video.currentTime = nextTime
+          lastSetTime = nextTime
+        }
+        animationFrameId = null // Pause render loop when not scrubbing
+      }
+    }
+
+    const startRender = () => {
+      if (!animationFrameId) {
+        animationFrameId = requestAnimationFrame(render)
+      }
+    }
+
     const updateScrollProgress = () => {
-      if (cachedMaxScroll <= 0) return
+      const heroElement = document.getElementById('home')
+      if (!heroElement) return
 
-      // Zero-reflow scroll progress calculation using cached metrics
-      const scrollY = window.scrollY
-      const currentScroll = scrollY - cachedHeroTop
-      const progress = Math.max(0, Math.min(1, currentScroll / cachedMaxScroll))
+      const rect = heroElement.getBoundingClientRect()
+      const maxScroll = rect.height - window.innerHeight
 
-      // Map progress strictly between VIDEO_START_TIME and VIDEO_END_TIME
+      if (maxScroll <= 0) return
+
+      // Map progress strictly based on current element position in viewport
+      const currentScroll = -rect.top
+      const progress = Math.max(0, Math.min(1, currentScroll / maxScroll))
+
       const { startTime, endTime } = getTrimmedBounds()
       targetTime = startTime + progress * (endTime - startTime)
+      
+      startRender()
     }
 
-    const render = () => {
-      if (video && video.readyState >= 2) {
-        const { startTime, endTime } = getTrimmedBounds()
-        const diff = targetTime - currentTime
-
-        if (Math.abs(diff) > 0.0015) {
-          currentTime += diff * SCRUB_SMOOTHNESS
-          // Clamp time strictly within trimmed bounds: [VIDEO_START_TIME, VIDEO_END_TIME]
-          const nextTime = Math.max(startTime, Math.min(endTime, currentTime))
-          if (Math.abs(video.currentTime - nextTime) > 0.005) {
-            video.currentTime = nextTime
-          }
-        } else {
-          currentTime = targetTime
-          video.currentTime = Math.max(startTime, Math.min(endTime, targetTime))
-        }
-      }
-      animationFrameId = requestAnimationFrame(render)
-    }
-
-    const handleScroll = () => {
-      updateScrollProgress()
-    }
-
-    const handleResize = () => {
-      updateMeasurements()
-      updateScrollProgress()
-    }
+    const handleScroll = () => updateScrollProgress()
+    const handleResize = () => updateScrollProgress()
 
     const handleLoadedData = () => {
       video.pause()
-      const { startTime, endTime } = getTrimmedBounds()
-      const usableDuration = Math.max(1, endTime - startTime)
+      const { startTime } = getTrimmedBounds()
       
-      // Calculate dynamic scroll track height based on usable video duration
-      const dynamicVh = Math.max(350, Math.round(usableDuration * HERO_SCROLL_MULTIPLIER * 100))
-      if (onTrackHeightChange) {
-        onTrackHeightChange(dynamicVh)
+      if (Math.abs(video.currentTime - startTime) > 0.05) {
+        video.currentTime = startTime
       }
-
-      video.currentTime = startTime
       currentTime = startTime
       targetTime = startTime
-      updateMeasurements()
+      lastSetTime = startTime
+      
       updateScrollProgress()
       setIsReady(true)
     }
-
-    updateMeasurements()
 
     if (video.readyState >= 2) {
       handleLoadedData()
@@ -121,19 +117,19 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     window.addEventListener('resize', handleResize, { passive: true })
-    animationFrameId = requestAnimationFrame(render)
+    startRender()
 
     return () => {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('resize', handleResize)
       video.removeEventListener('loadeddata', handleLoadedData)
       video.removeEventListener('canplay', handleLoadedData)
-      cancelAnimationFrame(animationFrameId)
+      if (animationFrameId) cancelAnimationFrame(animationFrameId)
     }
-  }, [isReducedMotion, onTrackHeightChange])
+  }, [isReducedMotion])
 
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0 bg-background">
       {/* Immediate Fallback Poster Background */}
       <Image
         src={assetPath('/hero/hero-poster.webp')}
@@ -144,7 +140,7 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
         priority
       />
 
-      {/* Pinned Video Element with Intelligent Subject Framing */}
+      {/* Pinned Video Element */}
       <video
         ref={videoRef}
         src={assetPath('/hero/hero-video.mp4')}
@@ -152,7 +148,7 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
         muted
         playsInline
         preload="auto"
-        className={`absolute inset-0 w-full h-full object-cover object-[50%_35%] transition-opacity duration-500 ${
+        className={`absolute inset-0 w-full h-full object-cover object-[50%_35%] transition-opacity duration-700 ${
           isReady ? 'opacity-100' : 'opacity-0'
         }`}
       />

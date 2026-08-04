@@ -11,7 +11,6 @@ export default function Hero() {
   const assetPath = (path: string) => `${basePath}${path}`
   const resumeUrl = "/Resume.pdf"
 
-  const [trackHeightVh, setTrackHeightVh] = useState(500)
   const [isReducedMotion, setIsReducedMotion] = useState(() => {
     if (typeof window === 'undefined') return false
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -27,14 +26,12 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full"
-      style={{ height: isReducedMotion ? 'auto' : `${trackHeightVh}vh` }}
+      className={`relative w-full ${isReducedMotion ? 'h-auto' : 'h-[400vh]'}`}
     >
       <div className={`${isReducedMotion ? 'relative min-h-screen py-16' : 'sticky top-0 h-screen'} w-full overflow-hidden flex flex-col justify-between px-4 pt-16 pb-4 sm:px-12 sm:pt-24 sm:pb-8`}>
         <HeroVideoBackground
           assetPath={assetPath}
           isReducedMotion={isReducedMotion}
-          onTrackHeightChange={setTrackHeightVh}
         />
         <FloatingElements />
 
