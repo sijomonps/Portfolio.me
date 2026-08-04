@@ -56,7 +56,7 @@ export default function Hero() {
         {/* Bottom Editorial Content Bar (Anchored at the Bottom with Safe Area) */}
         <div className="relative z-10 w-full max-w-4xl mx-auto pb-[max(0.5rem,env(safe-area-inset-bottom))]">
           <AnimatedText>
-            <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-black/40 p-3.5 sm:p-6 backdrop-blur-md shadow-2xl space-y-3 sm:space-y-4">
+            <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-transparent p-3.5 sm:p-6 shadow-2xl space-y-3 sm:space-y-4">
               <p className="text-center  mx-auto font-sans text-xs sm:text-sm md:text-base leading-relaxed text-foreground/85 font-normal max-w-3xl">
                 Building modern web applications for freelance clients—from code to cloud.
               </p>
