@@ -27,37 +27,40 @@ export default function About() {
             </div>
           </AnimatedText>
 
-          <div className="space-y-10">
+          <div className="space-y-8 sm:space-y-10">
             <AnimatedText>
-              <div className="space-y-5 font-sans text-base sm:text-lg leading-relaxed text-foreground/85">
-                <p>
-                  My journey into development started with creativity.
-                  During my Commerce degree, I spent most of my time building
-                  skills in video editing, portrait drawing, and expressing ideas
-                  visually. Stepping out of my comfort zone during college helped
-                  me grow, take initiative, and confidently showcase my work.
-                </p>
-                <p>
-                  That creative mindset naturally led me into software
-                  development. Today, I build modern web applications with
-                  a focus on real-world impact, bringing the same creativity,
-                  attention to detail, and curiosity into every project.
-                  I aim to grow in an environment where I can take ownership
-                  and learn by working on real challenges.
-                </p>
+              <div className="space-y-3">
+                <h2 className="font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold text-foreground">
+                  Creative Foundation
+                </h2>
+                <ul className="list-disc list-outside ml-5 space-y-2 font-sans text-base sm:text-lg leading-relaxed text-foreground/85 marker:text-foreground/40">
+                  <li>Started with video editing, portrait drawing, and visual storytelling.</li>
+                  <li>Developed creativity, attention to detail, and confidence.</li>
+                </ul>
               </div>
             </AnimatedText>
 
             <AnimatedText>
               <div className="space-y-3">
-                <h2 className="font-display text-3xl sm:text-4xl tracking-wide uppercase font-bold text-foreground">
-                  CAREER GOALS
+                <h2 className="font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold text-foreground">
+                  Development Journey
                 </h2>
-                <p className="font-sans text-base sm:text-lg leading-relaxed text-foreground/85">
-                  I am looking for opportunities where I can contribute as a Full-Stack or Web Developer,
-                  gain hands-on product experience, and grow into a dependable engineer who builds scalable,
-                  user-friendly digital solutions.
-                </p>
+                <ul className="list-disc list-outside ml-5 space-y-2 font-sans text-base sm:text-lg leading-relaxed text-foreground/85 marker:text-foreground/40">
+                  <li>Transitioned from Commerce into software development through continuous learning.</li>
+                  <li>Build modern full-stack web applications and deploy them independently.</li>
+                </ul>
+              </div>
+            </AnimatedText>
+
+            <AnimatedText>
+              <div className="space-y-3">
+                <h2 className="font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold text-foreground">
+                  Career Goals
+                </h2>
+                <ul className="list-disc list-outside ml-5 space-y-2 font-sans text-base sm:text-lg leading-relaxed text-foreground/85 marker:text-foreground/40">
+                  <li>Seeking opportunities as a Full-Stack or Web Developer.</li>
+                  <li>Passionate about Web, Cloud, and DevOps technologies.</li>
+                </ul>
               </div>
             </AnimatedText>
           </div>

@@ -6,18 +6,20 @@ import AnimatedText from "../common/AnimatedText"
 import FloatingElements from "../common/FloatingElements"
 import HeroVideoBackground from "./HeroVideoBackground"
 
+const HERO_SCROLL_MULTIPLIER = 14
+
 export default function Hero() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
   const assetPath = (path: string) => `${basePath}${path}`
   const resumeUrl = "/Resume.pdf"
 
-  const [isReducedMotion, setIsReducedMotion] = useState(() => {
-    if (typeof window === 'undefined') return false
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  })
+  const [isReducedMotion, setIsReducedMotion] = useState(false)
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (mediaQuery.matches) {
+      setTimeout(() => setIsReducedMotion(true), 0)
+    }
     const handleMotionChange = (e: MediaQueryListEvent) => setIsReducedMotion(e.matches)
     mediaQuery.addEventListener('change', handleMotionChange)
     return () => mediaQuery.removeEventListener('change', handleMotionChange)
@@ -26,14 +28,15 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className={`relative w-full ${isReducedMotion ? 'h-auto' : 'h-[400vh]'}`}
+      className="relative w-full"
+      style={!isReducedMotion ? { height: `${HERO_SCROLL_MULTIPLIER * 100}vh` } : { height: 'auto' }}
     >
       <div className={`${isReducedMotion ? 'relative min-h-screen py-16' : 'sticky top-0 h-screen'} w-full overflow-hidden flex flex-col justify-between px-4 pt-16 pb-4 sm:px-12 sm:pt-24 sm:pb-8`}>
         <HeroVideoBackground
           assetPath={assetPath}
           isReducedMotion={isReducedMotion}
         />
-        <FloatingElements />
+        {!isReducedMotion && <FloatingElements />}
 
         {/* Center Editorial Title Block (Visual Focus of the Hero) */}
         <main className="relative z-10 mx-auto my-auto flex flex-col items-center justify-center text-center space-y-2 sm:space-y-4 px-2 sm:px-4">
@@ -41,11 +44,11 @@ export default function Hero() {
             <p className="font-sans text-[10px] sm:text-xs uppercase tracking-[0.22em] sm:tracking-[0.3em] text-foreground/50 font-semibold mb-1 sm:mb-2">
               Thiruvalla, Kerala, India
             </p>
-            <h1 className="font-display text-5xl xs:text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] tracking-wider uppercase font-bold text-foreground leading-none drop-shadow-2xl">
+            <h1 className="font-display text-5xl xs:text-6xl sm:text-8xl md:text-9xl lg:text-[7rem] tracking-wider uppercase font-bold text-foreground leading-none drop-shadow-2xl">
               SIJOMON P S
             </h1>
             <p className="font-sans text-[10px] xs:text-xs sm:text-sm uppercase tracking-[0.18em] sm:tracking-[0.25em] text-foreground/80 font-medium mt-1 sm:mt-3">
-              Full-Stack Developer | MCA Student
+              Full-Stack Developer | Web • Cloud • DevOps
             </p>
           </AnimatedText>
         </main>
@@ -54,10 +57,8 @@ export default function Hero() {
         <div className="relative z-10 w-full max-w-4xl mx-auto pb-[max(0.5rem,env(safe-area-inset-bottom))]">
           <AnimatedText>
             <div className="rounded-xl sm:rounded-2xl border border-white/10 bg-black/40 p-3.5 sm:p-6 backdrop-blur-md shadow-2xl space-y-3 sm:space-y-4">
-              <p className="font-sans text-xs sm:text-sm md:text-base leading-relaxed text-foreground/85 font-normal max-w-3xl">
-                Commerce to code — I chose curiosity over comfort. Now I build real web 
-                applications and look forward to growing fast by taking ownership in a 
-                small, driven team.
+              <p className="text-center  mx-auto font-sans text-xs sm:text-sm md:text-base leading-relaxed text-foreground/85 font-normal max-w-3xl">
+                Building modern web applications for freelance clients—from code to cloud.
               </p>
 
               <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-white/10">
@@ -158,7 +159,7 @@ export default function Hero() {
                   <a className="hover:text-foreground transition-colors" href="mailto:sijomon700@gmail.com">
                     sijomon700@gmail.com
                   </a>
-                  <span>Open to roles</span>
+                  <span>Lets Connect</span>
                 </div>
               </div>
             </div>

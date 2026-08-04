@@ -1,38 +1,27 @@
 'use client'
 
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, MotionValue } from "framer-motion"
 import { useEffect, useState } from "react"
 
-// This is an optional background effect that displays floating elements
-// You can customize it by modifying the items array below
-// Each item has two properties:
-// - text: The text to display
-// - type: The category of the item ('tech', 'project', or 'interest')
-
-const items: { text: string, type: 'tech' | 'project' | 'interest' }[] = [
-  { text: "Creative", type: "interest" },
-  { text: "Developer", type: "project" },
-  { text: "React", type: "tech" },
-  { text: "Video Editor", type: "interest" },
-  { text: "Content Creator", type: "interest" },
-  { text: "Different", type: "interest" },
-  { text: "Javascript", type: "tech" },
-  { text: "Full Stack", type: "project" },
-  { text: "Django", type: "tech" },
-  { text: "Github", type: "tech" },
-  { text: "AWS", type: "tech" },
+const allTechWords = [
+  "HTML", "CSS", "JavaScript", "TypeScript", "React", "Next.js", 
+  "Node.js", "Express", "Python", "Django", "MongoDB", "MySQL", 
+  "Docker", "Git", "GitHub", "AWS", "Linux", "Vercel", "Render", 
+  "Cloud", "DevOps", "API", "CI/CD", "Responsive", "Full Stack", "Web"
 ]
 
 interface FloatingItem {
   id: number
   text: string
-  type: 'tech' | 'project' | 'interest'
   x: number
   y: number
-  side: 'left' | 'right'
-  direction: { x: number, y: number }
-  rotation: number
+  xOffset: number
+  yOffset: number
   duration: number
+  parallaxSpeed: number
+  rotation: number
+  scale: number
+  itemOpacity: number
 }
 
 function checkOverlap(
@@ -47,49 +36,77 @@ function checkOverlap(
   })
 }
 
-function generatePosition(side: 'left' | 'right', existingItems: { x: number, y: number }[]) {
-  let x: number, y: number
-  let attempts = 0
-  const maxAttempts = 50
-
-  do {
-    y = Math.random() * 90 + 10
-    if (y < 15) {
-      x = Math.random() * 100
-    } else {
-      x = side === 'left' ? Math.random() * 13 : 82 + Math.random() * 18
-    }
-    attempts++
-  } while (checkOverlap({ x, y }, existingItems) && attempts < maxAttempts)
-
-  return { x, y }
-}
-
 export default function FloatingElements() {
   const [elements, setElements] = useState<FloatingItem[]>([])
+  const [windowHeight, setWindowHeight] = useState(1000)
   const { scrollY } = useScroll()
-  const opacity = useTransform(scrollY, [0, 400], [1, 0])
+
+  // Wait until mounted to get real window height to avoid hydration mismatch
+  useEffect(() => {
+    const frameId = window.requestAnimationFrame(() => {
+      setWindowHeight(window.innerHeight)
+    })
+    const handleResize = () => setWindowHeight(window.innerHeight)
+    window.addEventListener('resize', handleResize)
+    return () => {
+      window.removeEventListener('resize', handleResize)
+      window.cancelAnimationFrame(frameId)
+    }
+  }, [])
+
+  // Fade out only during the final 100vh of the Hero scroll (between 1300vh and 1400vh for a 14x multiplier)
+  const fadeStart = windowHeight * 13.0
+  const fadeEnd = windowHeight * 14.0
+  // Master container goes from 1 to 0, individual item opacities handle their subtle look
+  const masterOpacity = useTransform(scrollY, [fadeStart, fadeEnd], [1, 0])
 
   useEffect(() => {
+    // Determine number of elements based on screen width
+    const width = window.innerWidth
+    let count = 6 // Mobile default
+    if (width > 1024) count = 16 // Desktop
+    else if (width > 768) count = 10 // Tablet
+
+    // Shuffle and pick words
+    const shuffled = [...allTechWords].sort(() => 0.5 - Math.random())
+    const selectedWords = shuffled.slice(0, count)
+
     const newElements: FloatingItem[] = []
     
-    items.forEach((item, index) => {
-      const side = index % 2 === 0 ? 'left' : 'right'
-      const pos = generatePosition(side, newElements)
-      
-      const direction = {
-        x: (Math.random() - 0.5) * 8,
-        y: (Math.random() - 0.5) * 8
-      }
+    selectedWords.forEach((word, index) => {
+      let x: number, y: number
+      let attempts = 0
+      const maxAttempts = 50
+
+      do {
+        const region = Math.floor(Math.random() * 4) // 0: top, 1: bottom, 2: left, 3: right
+        if (region === 0) { // top
+          y = Math.random() * 15
+          x = Math.random() * 100
+        } else if (region === 1) { // bottom
+          y = 85 + Math.random() * 15
+          x = Math.random() * 100
+        } else if (region === 2) { // left
+          y = 15 + Math.random() * 70
+          x = Math.random() * 15
+        } else { // right
+          y = 15 + Math.random() * 70
+          x = 85 + Math.random() * 15
+        }
+        attempts++
+      } while (checkOverlap({ x, y }, newElements) && attempts < maxAttempts)
 
       newElements.push({
         id: index,
-        ...item,
-        ...pos,
-        side,
-        direction,
-        rotation: (Math.random() - 0.5) * 15, // 随机旋转角度
-        duration: 10 + Math.random() * 15,
+        text: word,
+        x, y,
+        xOffset: (Math.random() - 0.5) * 240, // Horizontal drift: -120px to +120px
+        yOffset: (80 + Math.random() * 140) * (Math.random() > 0.5 ? 1 : -1), // Vertical drift: 80px to 220px (up or down)
+        duration: 25 + Math.random() * 25, // Unique duration (25s to 50s)
+        parallaxSpeed: -(0.03 + Math.random() * 0.07), // Subtle unique vertical shift on scroll
+        rotation: (Math.random() - 0.5) * 30, // -15 to +15 degrees
+        scale: 0.9 + Math.random() * 0.2, // 0.9 to 1.1
+        itemOpacity: 0.30 + Math.random() * 0.15, // 0.30 to 0.45
       })
     })
 
@@ -102,57 +119,57 @@ export default function FloatingElements() {
     }
   }, [])
 
+  if (elements.length === 0) return null
+
   return (
     <motion.div 
-      className="fixed inset-0 -z-10 overflow-hidden pointer-events-none"
-      style={{ opacity }}
-      initial={{ opacity: 0, scale: 0.9, filter: "blur(10px)" }}
-      animate={{ 
-        opacity: 1, 
-        scale: 1, 
-        filter: "blur(0px)",
-        transition: {
-          duration: 0.8,
-          ease: [0.25, 0.1, 0.25, 1] as [number, number, number, number],
-        }
-      }}
+      className="absolute inset-0 z-[5] overflow-hidden pointer-events-none"
+      style={{ opacity: masterOpacity }}
     >
       {elements.map((item) => (
-        <motion.div
-          key={item.id}
-          className={`
-            absolute font-mono blur-[1.5px] sm:blur-0
-            ${item.type === 'tech' && 'text-blue-400/60 text-base sm:text-lg'}
-            ${item.type === 'project' && 'text-amber-400/60 text-lg sm:text-xl font-bold'}
-            ${item.type === 'interest' && 'text-emerald-400/60 text-sm'}
-          `}
-          initial={{ x: `${item.x}vw`, y: `${item.y}vh`, rotate: item.rotation }}
-          animate={{
-            x: [
-              `${item.x}vw`,
-              `${item.x + item.direction.x}vw`,
-              `${item.x}vw`
-            ],
-            y: [
-              `${item.y}vh`,
-              `${item.y + item.direction.y}vh`,
-              `${item.y}vh`
-            ],
-            rotate: [
-              item.rotation,
-              item.rotation + 5,
-              item.rotation
-            ]
-          }}
-          transition={{
-            duration: item.duration,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-        >
-          {item.text}
-        </motion.div>
+        <FloatingWord key={item.id} item={item} scrollY={scrollY} />
       ))}
+    </motion.div>
+  )
+}
+
+function FloatingWord({ item, scrollY }: { item: FloatingItem, scrollY: MotionValue<number> }) {
+  const parallaxY = useTransform(scrollY, (value: number) => value * item.parallaxSpeed)
+  
+  return (
+    <motion.div
+      style={{ y: parallaxY, left: `${item.x}vw`, top: `${item.y}vh` }}
+      className="absolute pointer-events-none"
+    >
+      <motion.div
+        className="absolute font-sans font-medium text-white blur-[1px] text-sm sm:text-base tracking-wider uppercase select-none"
+        initial={{ 
+          opacity: 0,
+          rotate: item.rotation,
+          scale: item.scale
+        }}
+        animate={{
+          x: [
+            "0px",
+            `${item.xOffset}px`,
+            "0px"
+          ],
+          y: [
+            "0px",
+            `${item.yOffset}px`,
+            "0px"
+          ],
+          opacity: item.itemOpacity
+        }}
+        transition={{
+          duration: item.duration,
+          repeat: Infinity,
+          ease: "easeInOut",
+          opacity: { duration: 2, ease: "easeOut", repeat: 0 } // only fade in once
+        }}
+      >
+        {item.text}
+      </motion.div>
     </motion.div>
   )
 } 

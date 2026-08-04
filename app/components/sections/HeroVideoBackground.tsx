@@ -101,7 +101,13 @@ export default function HeroVideoBackground({ assetPath, isReducedMotion = false
       const progress = Math.max(0, Math.min(1, currentScroll / maxScroll))
 
       const { startTime, endTime } = getTrimmedBounds()
-      targetTime = startTime + progress * (endTime - startTime)
+      
+      // Cinematic Speed Breaker: 
+      // The video completes its timeline at 92% of the scroll.
+      // The final 8% of scroll holds the final frame while the Hero remains pinned.
+      // The interpolation engine's SCRUB_SMOOTHNESS automatically eases the video to a halt.
+      const videoProgress = Math.min(1, progress / 0.92)
+      targetTime = startTime + videoProgress * (endTime - startTime)
       
       startRender()
     }
