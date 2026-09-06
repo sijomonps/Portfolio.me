@@ -22,13 +22,6 @@ const educationTimeline: EducationItem[] = [
     institution: "Kristu Jyoti College of Management and Technology, Kottayam",
   },
   {
-    period: "Dec 2023 - Present",
-    title: "Industry-Ready Certification in Full-Stack Development",
-    institution: "NxtWave Disruptive Technologies",
-    score: "Professional Training",
-    details: "Hands-on learning in modern frontend and backend development.",
-  },
-  {
     period: "2020 - 2022",
     title: "Higher Secondary (Commerce Stream)",
     institution: "St. Johns HSS Eraviperoor",

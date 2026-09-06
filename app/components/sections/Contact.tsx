@@ -63,7 +63,7 @@ export default function Contact() {
         />
 
         <AnimatedText>
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-4 text-center relative z-10 text-foreground">LET&apos;S CONNECT</h1>
+          <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-4 text-center relative z-10 text-foreground">LET&apos;S CONNECT</h2>
         </AnimatedText>
 
         <AnimatedText>

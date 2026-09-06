@@ -90,9 +90,9 @@ export default function Projects() {
 
         <AnimatedText>
           <div className="text-center relative z-10">
-            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold text-foreground">
+            <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold text-foreground">
               FEATURED PROJECTS
-            </h1>
+            </h2>
             <p className="mt-3 max-w-2xl mx-auto font-sans text-sm sm:text-base text-foreground/80 leading-relaxed">
               I enjoy building practical products that solve real problems, improve workflows, and create engaging user experiences.
             </p>
@@ -123,7 +123,7 @@ export default function Projects() {
                   </div>
                 </div>
                 <div className="mt-3 flex flex-col sm:flex-row sm:items-start justify-between gap-3 sm:gap-4">
-                  <h2 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase font-bold text-foreground leading-none">{project.title}</h2>
+                  <h3 className="font-display text-3xl sm:text-4xl md:text-5xl tracking-wide uppercase font-bold text-foreground leading-none">{project.title}</h3>
                   <div className="flex items-center gap-2">
                     <a
                       href={project.link}

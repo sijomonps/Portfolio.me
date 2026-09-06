@@ -84,18 +84,18 @@ export default function MySkills() {
     <section id="skills" className="min-h-screen w-full flex items-center justify-center px-6 py-16 sm:px-12">
       <div className="container mx-auto max-w-6xl">
         <AnimatedText>
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-10 sm:mb-14 text-center">
+          <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-10 sm:mb-14 text-center">
             TECHNICAL SKILLS
-          </h1>
+          </h2>
         </AnimatedText>
 
         <div className="grid gap-6 grid-cols-1 max-w-5xl mx-auto">
           {skillsByCategory.map((group) => (
             <AnimatedText key={group.category}>
               <div className="rounded-2xl border border-black/10 bg-white/50 p-6 sm:p-8 shadow-sm backdrop-blur-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md dark:border-white/10 dark:bg-white/[0.02] dark:hover:border-white/20 dark:hover:bg-white/[0.04] flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
-                <h2 className="font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold text-foreground/90 w-full md:w-1/3 shrink-0">
+                <h3 className="font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold text-foreground/90 w-full md:w-1/3 shrink-0">
                   {group.category}
-                </h2>
+                </h3>
 
                 <div className="flex flex-wrap gap-3 flex-1">
                   {group.items.map((item) => {

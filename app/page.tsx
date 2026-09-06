@@ -21,7 +21,7 @@ export default function Home() {
 
         <section id="education" className="min-h-screen w-full flex items-center justify-center px-6 py-20 sm:px-12">
           <div className="w-full max-w-5xl">
-            <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-12 text-center">EDUCATION</h1>
+            <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-12 text-center">EDUCATION</h2>
             <CourseTimeline />
           </div>
         </section>

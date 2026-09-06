@@ -62,9 +62,9 @@ export default function Experience() {
         />
 
         <AnimatedText>
-          <h1 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-12 text-center relative z-10">
+          <h2 className="font-display text-5xl sm:text-7xl md:text-8xl tracking-wider uppercase font-bold mb-12 text-center relative z-10">
             CERTIFICATIONS AND INVOLVEMENT
-          </h1>
+          </h2>
         </AnimatedText>
 
         <div className="relative z-0 grid w-full max-w-6xl gap-6 md:grid-cols-3">
@@ -72,7 +72,7 @@ export default function Experience() {
             <AnimatedText key={item.title}>
               <article className="h-full rounded-2xl border border-white/20 bg-white/[0.08] p-6 backdrop-blur-xl shadow-lg">
                 <p className="font-sans text-xs uppercase tracking-[0.2em] font-semibold text-foreground/60">{item.period}</p>
-                <h2 className="mt-2 font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold leading-snug">{item.title}</h2>
+                <h3 className="mt-2 font-display text-2xl sm:text-3xl tracking-wide uppercase font-bold leading-snug">{item.title}</h3>
                 <p className="mt-1 font-sans text-sm font-medium text-foreground/75">{item.organization}</p>
 
                 <div className="mt-4 space-y-2 font-sans text-sm text-foreground/80 leading-relaxed">

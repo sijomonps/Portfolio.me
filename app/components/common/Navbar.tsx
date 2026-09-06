@@ -62,8 +62,8 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
-      <div className="max-w-4xl mx-auto px-4 py-4">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm">
+      <nav aria-label="Main Navigation" className="max-w-4xl mx-auto px-4 py-4">
         <div className="relative flex justify-center">
           <ul ref={navRef} className="flex justify-center gap-4 sm:gap-8 relative text-center overflow-x-auto">
             <div
@@ -75,6 +75,7 @@ export default function Navbar() {
               <li key={item.name}>
                 <a
                   href={item.href}
+                  aria-label={`Navigate to ${item.name} section`}
                   className={`
                     font-sans text-xs uppercase tracking-[0.15em]
                     font-semibold whitespace-nowrap transition-colors
@@ -94,7 +95,7 @@ export default function Navbar() {
             ))}
           </ul>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </header>
   )
 }
