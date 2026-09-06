@@ -1,6 +1,6 @@
 'use client'
 
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion"
+import { motion } from "framer-motion"
 import { useEffect, useState } from "react"
 
 const allTechWords = [
@@ -18,7 +18,6 @@ interface FloatingItem {
   xOffset: number
   yOffset: number
   duration: number
-  parallaxSpeed: number
   rotation: number
   scale: number
   itemOpacity: number
@@ -38,27 +37,6 @@ function checkOverlap(
 
 export default function FloatingElements() {
   const [elements, setElements] = useState<FloatingItem[]>([])
-  const [windowHeight, setWindowHeight] = useState(1000)
-  const { scrollY } = useScroll()
-
-  // Wait until mounted to get real window height to avoid hydration mismatch
-  useEffect(() => {
-    const frameId = window.requestAnimationFrame(() => {
-      setWindowHeight(window.innerHeight)
-    })
-    const handleResize = () => setWindowHeight(window.innerHeight)
-    window.addEventListener('resize', handleResize)
-    return () => {
-      window.removeEventListener('resize', handleResize)
-      window.cancelAnimationFrame(frameId)
-    }
-  }, [])
-
-  // Fade out only during the final 100vh of the Hero scroll (between 1300vh and 1400vh for a 14x multiplier)
-  const fadeStart = windowHeight * 13.0
-  const fadeEnd = windowHeight * 14.0
-  // Master container goes from 1 to 0, individual item opacities handle their subtle look
-  const masterOpacity = useTransform(scrollY, [fadeStart, fadeEnd], [1, 0])
 
   useEffect(() => {
     // Determine number of elements based on screen width
@@ -103,7 +81,6 @@ export default function FloatingElements() {
         xOffset: (Math.random() - 0.5) * 240, // Horizontal drift: -120px to +120px
         yOffset: (80 + Math.random() * 140) * (Math.random() > 0.5 ? 1 : -1), // Vertical drift: 80px to 220px (up or down)
         duration: 25 + Math.random() * 25, // Unique duration (25s to 50s)
-        parallaxSpeed: -(0.03 + Math.random() * 0.07), // Subtle unique vertical shift on scroll
         rotation: (Math.random() - 0.5) * 30, // -15 to +15 degrees
         scale: 0.9 + Math.random() * 0.2, // 0.9 to 1.1
         itemOpacity: 0.30 + Math.random() * 0.15, // 0.30 to 0.45
@@ -122,23 +99,18 @@ export default function FloatingElements() {
   if (elements.length === 0) return null
 
   return (
-    <motion.div 
-      className="absolute inset-0 z-[5] overflow-hidden pointer-events-none"
-      style={{ opacity: masterOpacity }}
-    >
+    <div className="absolute inset-0 z-[5] overflow-hidden pointer-events-none">
       {elements.map((item) => (
-        <FloatingWord key={item.id} item={item} scrollY={scrollY} />
+        <FloatingWord key={item.id} item={item} />
       ))}
-    </motion.div>
+    </div>
   )
 }
 
-function FloatingWord({ item, scrollY }: { item: FloatingItem, scrollY: MotionValue<number> }) {
-  const parallaxY = useTransform(scrollY, (value: number) => value * item.parallaxSpeed)
-  
+function FloatingWord({ item }: { item: FloatingItem }) {
   return (
-    <motion.div
-      style={{ y: parallaxY, left: `${item.x}vw`, top: `${item.y}vh` }}
+    <div
+      style={{ left: `${item.x}vw`, top: `${item.y}vh` }}
       className="absolute pointer-events-none"
     >
       <motion.div
@@ -170,6 +142,6 @@ function FloatingWord({ item, scrollY }: { item: FloatingItem, scrollY: MotionVa
       >
         {item.text}
       </motion.div>
-    </motion.div>
+    </div>
   )
 } 

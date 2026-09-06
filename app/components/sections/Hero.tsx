@@ -6,8 +6,6 @@ import AnimatedText from "../common/AnimatedText"
 import FloatingElements from "../common/FloatingElements"
 import HeroVideoBackground from "./HeroVideoBackground"
 
-const HERO_SCROLL_MULTIPLIER = 14
-
 export default function Hero() {
   const basePath = process.env.NEXT_PUBLIC_BASE_PATH || ""
   const assetPath = (path: string) => `${basePath}${path}`
@@ -28,18 +26,13 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative w-full"
-      style={!isReducedMotion ? { height: `${HERO_SCROLL_MULTIPLIER * 100}vh` } : { height: 'auto' }}
+      className="relative w-full min-h-screen overflow-hidden flex flex-col justify-between px-4 pt-16 pb-4 sm:px-12 sm:pt-24 sm:pb-8"
     >
-      <div className={`${isReducedMotion ? 'relative min-h-screen py-16' : 'sticky top-0 h-screen'} w-full overflow-hidden flex flex-col justify-between px-4 pt-16 pb-4 sm:px-12 sm:pt-24 sm:pb-8`}>
-        <HeroVideoBackground
-          assetPath={assetPath}
-          isReducedMotion={isReducedMotion}
-        />
-        {!isReducedMotion && <FloatingElements />}
+      <HeroVideoBackground assetPath={assetPath} />
+      {!isReducedMotion && <FloatingElements />}
 
-        {/* Center Editorial Title Block (Visual Focus of the Hero) */}
-        <main className="relative z-10 mx-auto my-auto flex flex-col items-center justify-center text-center space-y-2 sm:space-y-4 px-2 sm:px-4">
+      {/* Center Editorial Title Block (Visual Focus of the Hero) */}
+      <div className="relative z-10 mx-auto my-auto flex flex-col items-center justify-center text-center space-y-2 sm:space-y-4 px-2 sm:px-4">
           <AnimatedText className="flex flex-col items-center text-center">
             <p className="font-sans text-[10px] sm:text-xs uppercase tracking-[0.22em] sm:tracking-[0.3em] text-foreground/50 font-semibold mb-1 sm:mb-2">
               Thiruvalla, Kerala, India
@@ -51,7 +44,7 @@ export default function Hero() {
               Full-Stack Developer | Web • Cloud • DevOps
             </p>
           </AnimatedText>
-        </main>
+        </div>
 
         {/* Bottom Editorial Content Bar (Anchored at the Bottom with Safe Area) */}
         <div className="relative z-10 w-full max-w-4xl mx-auto pb-[max(0.5rem,env(safe-area-inset-bottom))]">
@@ -165,7 +158,6 @@ export default function Hero() {
             </div>
           </AnimatedText>
         </div>
-      </div>
     </section>
   )
 }
