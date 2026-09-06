@@ -22,12 +22,12 @@ const projects: Project[] = [
     category: 'Live Project',
     summary:
       'Research management platform developed for Marian College Kuttikkanam to streamline research paper submission, review, approval, and administration through a role-based workflow.',
-    stack: ['Node.js', 'Express.js','Next.js', 'MongoDB', 'Docker'],
+    stack: ['Node.js', 'Express.js', 'Next.js', 'MongoDB', 'Docker'],
     highlights: [
-      
+
     ],
     impact: 'Full Stack',
-    link: 'https://research-portal-marian.vercel.app/',
+    link: 'https://research.mariancollege.org/',
     featured: true,
   },
   {
@@ -37,7 +37,7 @@ const projects: Project[] = [
       'Chrome extension that helps users bookmark important conversations across ChatGPT, Claude, and Gemini - Ai Assisted Project',
     stack: ['JavaScript', 'HTML', 'PowerShell'],
     highlights: [
-    
+
     ],
     impact: '120+ Users',
     link: 'https://chromewebstore.google.com/detail/eimdlmdbonaemjmfnnnknjejlijpmcij?utm_source=item-share-cb',
@@ -80,7 +80,7 @@ export default function Projects() {
         relative
         overflow-hidden
       ">
-        <GradientBackground 
+        <GradientBackground
           sectionId="projects"
           gradientColors={{
             start: '#B45309',
@@ -98,16 +98,15 @@ export default function Projects() {
             </p>
           </div>
         </AnimatedText>
-        
+
         <div className="relative z-0 mt-10 grid w-full max-w-6xl gap-6 md:grid-cols-2">
           {projects.map((project) => (
             <AnimatedText key={project.title}>
               <article
-                className={`group relative h-full overflow-hidden rounded-xl border bg-white/[0.08] p-4 sm:p-5 backdrop-blur-xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-900/20 ${
-                  project.featured
+                className={`group relative h-full overflow-hidden rounded-xl border bg-white/[0.08] p-4 sm:p-5 backdrop-blur-xl shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-amber-900/20 ${project.featured
                     ? 'md:col-span-2 border-amber-400/50 shadow-amber-900/30 md:p-6'
                     : 'border-white/15'
-                }`}
+                  }`}
               >
                 <div className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
                   <div className="absolute inset-0 rounded-xl ring-1 ring-amber-400/30" />
